@@ -1,0 +1,113 @@
+/* Reset & Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: black;
+    overflow: hidden;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+}
+
+/* Canvas */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: block;
+}
+
+/* Text Container */
+.text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+}
+
+/* Headings */
+#happy,
+#newyear {
+    color: white;
+    text-shadow: 0 0 40px #ff00ff, 0 0 20px #00ffff;
+    letter-spacing: 8px;
+    margin: 10px 0;
+    animation: fadeIn 2s ease-in-out;
+}
+
+#happy {
+    font-family: 'Marck Script', cursive;
+    font-size: 72px;
+}
+
+#newyear {
+    font-family: 'Antonio', sans-serif;
+    font-size: 60px;
+    letter-spacing: 12px;
+}
+
+/* Hope Message */
+#hope {
+    color: #ccc;
+    font-size: 24px;
+    font-family: 'Marck Script', cursive;
+    letter-spacing: 4px;
+    margin-top: 20px;
+    text-shadow: 0 0 20px #ff00ff;
+    animation: fadeIn 3s ease-in-out;
+}
+
+/* Click Message */
+#click-message {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #888;
+    font-size: 14px;
+    z-index: 3;
+    animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #happy {
+        font-size: 48px;
+    }
+    
+    #newyear {
+        font-size: 36px;
+    }
+    
+    #hope {
+        font-size: 18px;
+    }
+}
