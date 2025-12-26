@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy New Year 2026 🎆</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Antonio&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:black;
+    overflow:hidden;
+    cursor:pointer;
+    font-family:'Antonio', sans-serif;
+}
+
+/* Canvas */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:0;
+}
+
+/* Text */
+#happy,#newyear{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    color:white;
+    text-align:center;
+    z-index:2;
+    text-shadow:0 0 40px #ff00ff;
+    animation:glow 2.5s infinite alternate;
+}
+
+#happy{
+    top:28%;
+    font-family:'Marck Script',cursive;
+    font-size:80px;
+    letter-spacing:14px;
+}
+
+#newyear{
+    top:45%;
+    font-family:'Marck Script',cursive;
+    font-size:76px;
+    letter-spacing:12px;
+}
+
+/* Glow animation */
+@keyframes glow{
+    from{ text-shadow:0 0 20px #ff00ff; }
+    to{ text-shadow:0 0 60px #ff00ff; }
+}
+
+/* Button */
+.btn{
+    position:absolute;
+    top:65%;
+    left:50%;
+    transform:translateX(-50%);
+    padding:16px 40px;
+    color:white;
+    text-decoration:none;
+    font-size:20px;
+    letter-spacing:3px;
+    border:2px solid #ff00ff;
+    border-radius:40px;
+    box-shadow:0 0 25px #ff00ff;
+    z-index:3;
+    animation:pulse 1.8s infinite;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#ff00ff;
+    box-shadow:0 0 50px #ff00ff;
+}
+
+/* Button pulse */
+@keyframes pulse{
+    0%{ transform:translateX(-50%) scale(1); }
+    50%{ transform:translateX(-50%) scale(1.08); }
+    100%{ transform:translateX(-50%) scale(1); }
+}
+
+/* Click message */
+#click{
+    position:fixed;
+    bottom:20px;
+    width:100%;
+    text-align:center;
+    color:#bbb;
+    font-size:14px;
+    z-index:3;
+    letter-spacing:2px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<h1 id="happy">Happy</h1>
+<h2 id="newyear">New Year 2026</h2>
+
+<a href="register.html" class="btn">🎁 Click Surprise</a>
+
+<div id="click">Click anywhere to enable sound 🎇</div>
+
+<!-- Firework Sound -->
+<audio id="boom" src="new-years-eve-in-peru-fireworks-fire-crackers-and-rockets-to-celebrate-the-new-year-pisco-peru-2012-17692.mp3" preload="auto"></audio>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const boom = document.getElementById("boom");
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+window.onresize = ()=>{
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+};
+
+let soundEnabled = false;
+
+document.addEventListener("click", ()=>{
+    soundEnabled = true;
+    document.getElementById("click").style.display="none";
+});
+
+/* Firework class */
+class Firework{
+    constructor(x,y){
+        this.particles=[];
+        for(let i=0;i<100;i++){
+            this.particles.push({
+                x:x,
+                y:y,
+                angle:Math.random()*Math.PI*2,
+                speed:Math.random()*6+2,
+                life:100,
+                color:`hsl(${Math.random()*360},100%,50%)`
+            });
+        }
+        if(soundEnabled){
+            boom.currentTime=0;
+            boom.play();
+        }
+    }
+
+    update(){
+        this.particles.forEach(p=>{
+            p.x+=Math.cos(p.angle)*p.speed;
+            p.y+=Math.sin(p.angle)*p.speed;
+            p.life--;
+        });
+        this.particles=this.particles.filter(p=>p.life>0);
+    }
+
+    draw(){
+        this.particles.forEach(p=>{
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,2,0,Math.PI*2);
+            ctx.fillStyle=p.color;
+            ctx.fill();
+        });
+    }
+}
+
+let fireworks=[];
+
+function animate(){
+    ctx.fillStyle="rgba(0,0,0,0.25)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    fireworks.forEach(f=>{
+        f.update();
+        f.draw();
+    });
+
+    fireworks=fireworks.filter(f=>f.particles.length>0);
+    requestAnimationFrame(animate);
+}
+
+setInterval(()=>{
+    fireworks.push(
+        new Firework(
+            Math.random()*canvas.width,
+            Math.random()*canvas.height/2
+        )
+    );
+},700);
+
+animate();
+</script>
+
+</body>
+</html>
